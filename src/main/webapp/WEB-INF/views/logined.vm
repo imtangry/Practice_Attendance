@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>已登录</title>
+</head>
+<body>
+<h1>您已登录</h1>
+<a href="/">返回首页</a>
+<a href="/user/logout">退出登录</a>
+</body>
+</html>

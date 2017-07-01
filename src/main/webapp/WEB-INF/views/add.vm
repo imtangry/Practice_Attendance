@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加用户</title>
+</head>
+<h2>添加用户</h2>
+<form method="post" action="/login/add">
+    <input name="username" type="text">用户名<br/>
+    <input name="password" type="password">密码<br/>
+    <input name="realName" type="text">真实姓名<br/>
+    <input name="mobile" type="text">手机号码<br/>
+    <input name="headImage" type="text">头像文件<br/>
+    <input type="submit">
+</form>
+</body>
+</html>
+
