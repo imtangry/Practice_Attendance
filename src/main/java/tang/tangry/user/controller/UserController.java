@@ -50,8 +50,10 @@ public class UserController {
 @Controller
 @RequestMapping
 class AttendanceManager {
+    
     @RequestMapping
     public String home() {
+        System.out.println("接收到进入主页请求");
         return "index";
     }
 }
