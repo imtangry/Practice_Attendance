@@ -16,7 +16,9 @@ public class SessionIntercepter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object o) throws Exception {
 
-
+        if (req.getRequestURI().indexOf("clockin") >= 0) {
+            return true;
+        }
         if (req.getRequestURI().indexOf("login") >= 0) {
             HttpSession session = req.getSession();
             User user = (User) session.getAttribute("userInfo");

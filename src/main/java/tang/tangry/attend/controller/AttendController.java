@@ -2,10 +2,15 @@ package tang.tangry.attend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import tang.tangry.attend.entity.Attend;
 import tang.tangry.attend.service.AttendService;
+import tang.tangry.common.utils.GetDate;
+import tang.tangry.user.entity.User;
+
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 /**
  * Created by tryu on 2017/7/2.
@@ -25,19 +30,16 @@ public class AttendController {
 
     /**
      * Create by tryu 2017/7/2 14:45
-     * 模拟打卡情况
+     * 接收打卡请求，缺勤功能暂时不包含
      */
     @Autowired
     private AttendService attendService;
 
     @RequestMapping("clockin")
-    public String clockIn(@RequestBody Attend attend) {
-        int status = attendService.ClockIn(attend);
-        if (status == 0) {
-            return "failed";
-        } else {
-            return "success";
-        }
+    @ResponseBody
+    public String clockIn(HttpSession session) {
+        int userId = ((User) session.getAttribute("userInfo")).getId();
+        return attendService.clockIn(userId);
     }
 
 
