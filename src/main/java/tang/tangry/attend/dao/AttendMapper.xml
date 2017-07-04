@@ -30,6 +30,8 @@
         from attend
         where user_id= #{userId} AND attend_date = CURDATE()
     </select>
+
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from attend
     where id = #{id,jdbcType=INTEGER}
@@ -142,4 +144,51 @@
     off_duty = #{offDuty,jdbcType=TIME}
     where user_id = #{userId} AND attend_date = #{attendDate,jdbcType=DATE}
   </update>
+
+
+    <update id="updateStatus" >
+        update attend
+        set
+        attend_status = #{attendStatus}
+        where user_id = #{userId} AND attend_date = #{attendDate,jdbcType=DATE}
+    </update>
+
+    <select id="getRecord" resultType="int">
+        select
+        COUNT(0)
+        from attend
+        where user_id=#{UserId}
+        <if test="preDate!=null||afterDate!=null">
+            AND attend_date BETWEEN #{preDate} AND #{afterDate}
+        </if>
+    </select>
+
+    <select id="getRecordAttend" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from attend
+        where user_id=#{UserId}
+        <if test="preDate!=null||afterDate!=null">
+            AND attend_date BETWEEN #{preDate} AND #{afterDate}
+        </if>
+    </select>
+
+    <select id="getRecordAttendLimit" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from attend
+        where user_id=#{UserId}
+        <if test="preDate!=null||afterDate!=null">
+            AND attend_date BETWEEN #{preDate} AND #{afterDate}
+        </if>
+        limit #{startRow},#{queryRow}
+    </select>
+
+    <select id="selectUserIds" resultType="int">
+        select
+        id
+        from user
+        where 1=1
+    </select>
+
 </mapper>

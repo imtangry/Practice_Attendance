@@ -54,7 +54,7 @@ public class GetDate {
     public static int absenceTimes(Date clickIn, Date clickOut) {
         long start = clickIn.getTime();
         long end = clickOut.getTime();
-        return 4800 - ((int) ((end - start) / (1000 * 60)));
+        return 480 - ((int) ((end - start) / (1000 * 60)));
     }
     /**
      *Create by tryu 2017/7/3 14:07

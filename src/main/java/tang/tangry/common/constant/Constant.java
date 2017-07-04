@@ -14,4 +14,5 @@ public class Constant {
     public static final int CLOCK_IN_MINUTE = 30;
     public static final int CLOCK_OUT_HOUR = 23;
     public static final int CLOCK_OUT_MINUTE = 59;
+    public static final int MAX_PAGESIZE = 10;
 }

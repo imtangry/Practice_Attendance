@@ -71,5 +71,5 @@
         <property name="filters" value="mergeStat"/>
     </bean>
 
-
+<import resource="spring-quartz.xml"/>
 </beans>

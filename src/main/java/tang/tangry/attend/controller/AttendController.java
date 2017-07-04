@@ -2,15 +2,16 @@ package tang.tangry.attend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import tang.tangry.attend.entity.Attend;
 import tang.tangry.attend.service.AttendService;
-import tang.tangry.common.utils.GetDate;
+import tang.tangry.attend.vo.QueryCondition;
+import tang.tangry.common.page.Pages;
 import tang.tangry.user.entity.User;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 
 /**
  * Created by tryu on 2017/7/2.
@@ -42,5 +43,17 @@ public class AttendController {
         return attendService.clockIn(userId);
     }
 
+    /**
+     * Create by tryu 2017/7/3 18:56
+     * 解决分页请求,前端请求日期，根据日期返回分页？
+     * 路径暂时clockin，postman测试
+     */
+    @RequestMapping("/clockinpages")
+    @ResponseBody
+    public Pages pages(HttpSession session, QueryCondition queryCondition) {
+        queryCondition.setUserId(((User) session.getAttribute("userInfo")).getId());
+        Pages pages = attendService.getPages(queryCondition);
+        return pages;
+    }
 
 }
