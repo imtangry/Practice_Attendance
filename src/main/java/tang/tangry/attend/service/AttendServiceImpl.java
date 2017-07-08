@@ -21,7 +21,8 @@ import java.util.List;
 public class AttendServiceImpl implements AttendService {
     @Autowired
     private AttendMapper attendMapper;
-
+    private static final Byte ATTEND_STATUS_ABNORMAL = 2;
+    private static final Byte ATTEND_STATUS_NORMAL = 1;
     /**
      * Create by tryu 2017/7/2 16:17
      * 使用log4j,上班打卡，9:30之后打卡算异常,返回打卡操作的情况。
@@ -38,7 +39,7 @@ public class AttendServiceImpl implements AttendService {
         attend.setAttendDate(currentDate);
         attend.setAttendWeek((byte) week);
         //打卡状态默认为正常，出现某一个异常就视为异常
-        attend.setAttendStatus((byte) 1);
+        attend.setAttendStatus(ATTEND_STATUS_NORMAL);
         //不存在记录，此次打卡就记为上班打卡，并判断其打卡时间
         if (getAttend(userId) == null) {
             if (currentDate.compareTo(GetDate.beSetDate(Constant.CLOCK_IN_HOUR, Constant.CLOCK_IN_MINUTE)) < 0) {
@@ -50,7 +51,7 @@ public class AttendServiceImpl implements AttendService {
                     return "上班打卡成功，开始修仙";
                 }
             } else {
-                attend.setAttendStatus((byte) 0);
+                attend.setAttendStatus(ATTEND_STATUS_ABNORMAL);
                 attend.setOnDuty(currentDate);
                 int status = attendMapper.insertSelective(attend);
                 if (status == 0) {
@@ -60,7 +61,7 @@ public class AttendServiceImpl implements AttendService {
                 }
             }
         }
-        //下面是更新下班打卡时间，下班打卡可多次发生，以最后一次为准，超过午夜12点记为异常，且不加入记录
+        //下面是更新下班打卡时间，下班打卡可多次发生，以最后一次为准，超过午夜11点记为异常，且不加入记录
         else {
             if (currentDate.compareTo(GetDate.beSetDate(Constant.CLOCK_OUT_HOUR, Constant.CLOCK_OUT_MINUTE)) < 0) {
                 attend.setOffDuty(currentDate);

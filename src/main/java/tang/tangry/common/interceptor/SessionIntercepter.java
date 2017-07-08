@@ -19,6 +19,11 @@ public class SessionIntercepter implements HandlerInterceptor {
         if (req.getRequestURI().indexOf("clockin") >= 0) {
             return true;
         }
+
+        if (req.getRequestURI().indexOf("reattend") >= 0) {
+            return true;
+        }
+
         if (req.getRequestURI().indexOf("login") >= 0) {
             HttpSession session = req.getSession();
             User user = (User) session.getAttribute("userInfo");

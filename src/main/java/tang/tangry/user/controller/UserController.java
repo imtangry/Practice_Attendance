@@ -1,6 +1,7 @@
 package tang.tangry.user.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -70,8 +71,10 @@ class AttendanceManager {
      * 进入系统主页
      */
     @RequestMapping
-    public String home() {
+    public String home(Model model,HttpSession session) {
         System.out.println("接收到进入主页请求");
+        String realName = ((User)session.getAttribute("userInfo")).getRealName();
+        model.addAttribute("userRealName",realName);
         return "index";
     }
 }

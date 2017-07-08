@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tang.tangry.workflow.dao.ReAttendMapper">
+    <resultMap id="BaseResultMap" type="tang.tangry.workflow.entity.ReAttend">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="attend_id" property="attendId" jdbcType="INTEGER"/>
+        <result column="re_starter" property="reStarter" jdbcType="VARCHAR"/>
+        <result column="re_duty_on" property="reDutyOn" jdbcType="TIME"/>
+        <result column="re_duty_off" property="reDutyOff" jdbcType="TIME"/>
+        <result column="leader_heandle" property="leaderHeandle" jdbcType="VARCHAR"/>
+        <result column="re_status" property="reStatus" jdbcType="TINYINT"/>
+        <result column="comment" property="comment" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, attend_id, re_starter, re_duty_on, re_duty_off, leader_heandle, re_status, comment
+  </sql>
+
+
+    <select id="selectReAttendRecord" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from re_attend
+        where re_starter = #{userName}
+    </select>
+
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from re_attend
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from re_attend
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="tang.tangry.workflow.entity.ReAttend" useGeneratedKeys="true" keyProperty="id">
+    insert into re_attend (id, attend_id, re_starter,
+      re_duty_on, re_duty_off, leader_heandle,
+      re_status, comment)
+    values (#{id,jdbcType=INTEGER}, #{attendId,jdbcType=INTEGER}, #{reStarter,jdbcType=VARCHAR},
+      #{reDutyOn,jdbcType=TIME}, #{reDutyOff,jdbcType=TIME}, #{leaderHeandle,jdbcType=VARCHAR},
+      #{reStatus,jdbcType=TINYINT}, #{comment,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="tang.tangry.workflow.entity.ReAttend">
+        insert into re_attend
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="attendId != null">
+                attend_id,
+            </if>
+            <if test="reStarter != null">
+                re_starter,
+            </if>
+            <if test="reDutyOn != null">
+                re_duty_on,
+            </if>
+            <if test="reDutyOff != null">
+                re_duty_off,
+            </if>
+            <if test="leaderHeandle != null">
+                leader_heandle,
+            </if>
+            <if test="reStatus != null">
+                re_status,
+            </if>
+            <if test="comment != null">
+                comment,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="attendId != null">
+                #{attendId,jdbcType=INTEGER},
+            </if>
+            <if test="reStarter != null">
+                #{reStarter,jdbcType=VARCHAR},
+            </if>
+            <if test="reDutyOn != null">
+                #{reDutyOn,jdbcType=TIME},
+            </if>
+            <if test="reDutyOff != null">
+                #{reDutyOff,jdbcType=TIME},
+            </if>
+            <if test="leaderHeandle != null">
+                #{leaderHeandle,jdbcType=VARCHAR},
+            </if>
+            <if test="reStatus != null">
+                #{reStatus,jdbcType=TINYINT},
+            </if>
+            <if test="comment != null">
+                #{comment,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="tang.tangry.workflow.entity.ReAttend">
+        update re_attend
+        <set>
+            <if test="attendId != null">
+                attend_id = #{attendId,jdbcType=INTEGER},
+            </if>
+            <if test="reStarter != null">
+                re_starter = #{reStarter,jdbcType=VARCHAR},
+            </if>
+            <if test="reDutyOn != null">
+                re_duty_on = #{reDutyOn,jdbcType=TIME},
+            </if>
+            <if test="reDutyOff != null">
+                re_duty_off = #{reDutyOff,jdbcType=TIME},
+            </if>
+            <if test="leaderHeandle != null">
+                leader_heandle = #{leaderHeandle,jdbcType=VARCHAR},
+            </if>
+            <if test="reStatus != null">
+                re_status = #{reStatus,jdbcType=TINYINT},
+            </if>
+            <if test="comment != null">
+                comment = #{comment,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="tang.tangry.workflow.entity.ReAttend">
+    update re_attend
+    set attend_id = #{attendId,jdbcType=INTEGER},
+      re_starter = #{reStarter,jdbcType=VARCHAR},
+      re_duty_on = #{reDutyOn,jdbcType=TIME},
+      re_duty_off = #{reDutyOff,jdbcType=TIME},
+      leader_heandle = #{leaderHeandle,jdbcType=VARCHAR},
+      re_status = #{reStatus,jdbcType=TINYINT},
+      comment = #{comment,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

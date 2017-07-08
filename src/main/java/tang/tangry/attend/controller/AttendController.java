@@ -31,7 +31,7 @@ public class AttendController {
 
     /**
      * Create by tryu 2017/7/2 14:45
-     * 接收打卡请求，缺勤功能暂时不包含
+     * 接收打卡请求，缺勤功能暂时不包含，
      */
     @Autowired
     private AttendService attendService;

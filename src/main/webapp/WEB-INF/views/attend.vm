@@ -116,16 +116,25 @@ desired effect
                 <!-- Optionally, you can add icons to the links -->
 
                 <li><a href="/"><i class="fa fa-user"></i> <span>个人信息</span></a></li>
-                <li><a href="#" class="active"><i class="fa fa-calendar"></i> <span>考勤信息</span></a></li>
+
                 <li class="treeview">
-                    <a href="#"><i class="fa fa-check-square-o"></i> <span>考勤操作</span>
+                    <a href="javascript:void(0)"><i class="fa fa-calendar"></i> <span>我的考勤</span><span
+                            class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                    <ul class="treeview-menu">
+                        <li><a href="/attend">考勤信息</a></li>
+                        <li><a href="/reattend">补签信息</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="javascript:void(0)"><i class="fa fa-check-square-o"></i> <span>考勤操作</span>
                         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="javascript:void(0)" id="clock_in">打卡</a></li>
-                        <li><a href="#">请假</a></li>
+                        <li><a href="javascript:void(0)">请假</a></li>
                     </ul>
                 </li>
                 <li><a href="/user/logout"><i class="fa fa-user-times"></i> <span>退出登录</span></a></li>
@@ -197,11 +206,78 @@ desired effect
     </div>
     <!-- /.content-wrapper -->
 
+    <!-- 模态框示例（Modal） -->
+    <form method="post" class="form-horizontal" role="form" id="form_data" style="margin: 20px;"
+          onsubmit="return false;">
+        <div class="modal fade" id="reAttendModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            用户信息
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="re_attend_form" class="form-horizontal" role="form" onsubmit="return false;">
+
+                            <div style="display: none">
+                                <input type="text" id="attendId" name="attendId" value="">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="user_id" class="col-sm-3 control-label">补签申请人</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="reStarter" name="reStarter" value=""
+                                           placeholder="请输入你的姓名">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lastname" class="col-sm-3 control-label">上班打卡时间</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="reDutyOn" value="" id="reDutyOn"
+                                           placeholder="2001-01-01 09:30:00">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lastname" class="col-sm-3 control-label">下班打卡时间</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="reDutyOff" value="" id="reDutyOff"
+                                           placeholder="2001-01-01 18:30:00">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="remark" class="col-sm-3 control-label">备注</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" name="comment" value="" id="comment"
+                                              placeholder="备注"></textarea>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary" id="re_attend_form_submit">提交</button>
+                        <span id="tip"> </span>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </form>
+
+
     <!-- Main Footer -->
     <footer class="main-footer">
         <!-- To the right -->
         <div class="pull-right hidden-xs">
-            Anything you want
+            By Try
         </div>
         <!-- Default to the left -->
         <strong>Copyright &copy; 2017 <a href="#">Company</a>.</strong> All rights reserved.
@@ -304,7 +380,6 @@ desired effect
 <script src="/static/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
 
 
-
 <!-- 异步请求用户主要信息 -->
 <script src="/static/js/getSimpleInfo.js"></script>
 <!-- 异步方式打卡 -->
@@ -315,6 +390,34 @@ desired effect
      fixed layout. -->
 
 <script>
+
+    var attendFullData;
+    //modal 提交表单
+    $(function () {
+        $('#re_attend_form_submit').click(function () {
+            console.log(attendFullData);
+            var param = {};
+
+            param.attendId = $('#attendId').val();
+            param.reStarter = $('#reStarter').val();
+            param.reDutyOn = $('#reDutyOn').val();
+            param.reDutyOff = $('#reDutyOff').val();
+            param.comment = $('#comment').val();
+            param = JSON.stringify(param).replace(/\"/g, "'");
+
+            console.log(param);
+        ##使用Ajax
+            $.ajax({
+                type: "POST",
+                url: "/reattend/start",
+                contentType:"application/json",
+                data: param,
+                dataType:"json"
+            });
+        });
+    });
+
+
     //Date range as a button
     $('#rangeDate').daterangepicker(
             {
@@ -328,8 +431,8 @@ desired effect
                     monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
                         '七月', '八月', '九月', '十月', '十一月', '十二月'],
                     firstDay: 1,
-                    format:"YYYY-MM-DD",
-                    separator:"/",
+                    format: "YYYY-MM-DD",
+                    separator: "/",
                 },
 
                 ranges: {
@@ -344,6 +447,7 @@ desired effect
                 endDate: moment().endOf('month')
             }
     );
+
 
     Date.prototype.format = function (fmt) {
         var o = {
@@ -366,6 +470,7 @@ desired effect
         return fmt;
     }
 
+
     function formToJson(form) {
         var result = {};
         var fieldArray = $('#' + form).serializeArray();
@@ -379,6 +484,7 @@ desired effect
         }
         return result;
     }
+
 
     //Date picker
     $('#attendDate').datepicker({
@@ -397,6 +503,12 @@ desired effect
         alert("查看操作");
     }
 
+    function reAttend(data) {
+        attendFullData = data;
+        $("#attendId").val(data.id)
+        $("#reAttendModal").modal('show');
+
+    }
 
     var week_CN = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
 
@@ -405,6 +517,8 @@ desired effect
     function attendQuery() {
         table.ajax.reload();
     }
+
+
     $(function () {
         //提示信息
         $.fn.dataTable.ext.errMode = 'none';
@@ -434,6 +548,7 @@ desired effect
                 "sSortDescending": ": 以降序排列此列"
             }
         };
+
 
         //初始化表格
         table = $("#attend_grid")
@@ -487,12 +602,13 @@ desired effect
                     },
                     //列表表头字段
                     columns: [
-                        {   "data": "seq",
-                            render: function (data, type, full,row_col) {
+                        {
+                            "data": "seq",
+                            render: function (data, type, full, row_col) {
                                 return row_col.row;
                             }
                         },
-                        {"data": "userId" , "visible" : false },
+                        {"data": "userId", "visible": false},
                         {
                             "data": "attendDate",
                             render: function (data, type, full) {
@@ -508,9 +624,9 @@ desired effect
                         {
                             "data": "onDuty",
                             render: function (data, type, full) {
-                                if(data!=null){
+                                if (data != null) {
                                     return new Date(data).format("hh:mm:ss");
-                                }else{
+                                } else {
                                     return "";
                                 }
                             }
@@ -518,9 +634,9 @@ desired effect
                         {
                             "data": "offDuty",
                             render: function (data, type, full) {
-                                if(data!=null){
+                                if (data != null) {
                                     return new Date(data).format("hh:mm:ss");
-                                }else{
+                                } else {
                                     return "";
                                 }
                             }
@@ -531,9 +647,9 @@ desired effect
                         {
                             "data": "attendStatus",
                             render: function (data, type, full) {
-                                if(data==1){
+                                if (data == 1) {
                                     return "<span style='color: green'>正常</span>";
-                                }else{
+                                } else {
                                     return "<span style='color: red'>异常</span>";
                                 }
                             }
@@ -542,9 +658,10 @@ desired effect
                         {
                             "data": "操作列",
                             render: function (data, type, full) {
-                                return ('<button type="button" class="btn btn-info" onclick="detail(' + full.id + ')">详情</button> ' +
-                                '<button type="button" class="btn btn-warning" onclick="update(' + full.id + ')">修改</button> ' +
-                                '<button type="button" class="btn btn-danger" onclick="del(' + full.id + ')">删除</button>');
+//                                console.log(full)
+                                if (full.attendStatus == 2) {
+                                    return '<button type="button" class="btn btn-info" onclick="return reAttend(' + JSON.stringify(full).replace(/\"/g, "'") + ')">补签</button>';
+                                }
                             }
                         }
                     ]
