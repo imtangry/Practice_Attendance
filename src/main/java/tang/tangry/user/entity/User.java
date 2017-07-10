@@ -1,5 +1,7 @@
 package tang.tangry.user.entity;
 
+import java.util.List;
+
 public class User {
     private Integer id;
 
@@ -12,6 +14,16 @@ public class User {
     private String mobile;
 
     private String headImage;
+    //加了shiro，需要额外的role表
+    private List<Role> roleList;
+
+    public List<Role> getRoles() {
+        return roleList;
+    }
+
+    public void setRoles(List<Role> rolesList) {
+        this.roleList = rolesList;
+    }
 
     public Integer getId() {
         return id;

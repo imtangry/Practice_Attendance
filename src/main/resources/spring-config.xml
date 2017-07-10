@@ -2,33 +2,34 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-4.0.xsd
-    http://www.springframework.org/schema/aop
-    http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
     http://www.springframework.org/schema/tx
     http://www.springframework.org/schema/tx/spring-tx-4.0.xsd"
 >
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
     <context:annotation-config/>
     <context:component-scan base-package="tang.tangry"/>
     <context:property-placeholder location="classpath:jdbc.properties"/>
+
     <!-- 找到Mapper的xml -->
     <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
         <property name="dataSource" ref="dataSource"/>
         <property name="mapperLocations" value="classpath:tang/tangry/**/**.xml"/>
     </bean>
+
     <!--  找到Mapper接口 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" id="mapperScannerConfigurer">
         <property name="basePackage" value="tang.tangry.**.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
+
     <!-- 注解驱动事务 -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
+
     <!-- 事务交给spring的bean管理，需要告诉spring数据库信息-->
     <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
         <property name="dataSource" ref="dataSource"/>
@@ -111,6 +112,6 @@
     <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
     <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
 
-
-    <import resource="spring-quartz.xml"/>
+    <!--<import resource="spring-quartz.xml"/>-->
+    <import resource="spring-shiro.xml"/>
 </beans>

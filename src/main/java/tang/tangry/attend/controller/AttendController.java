@@ -35,7 +35,6 @@ public class AttendController {
      */
     @Autowired
     private AttendService attendService;
-
     @RequestMapping("clockin")
     @ResponseBody
     public String clockIn(HttpSession session) {

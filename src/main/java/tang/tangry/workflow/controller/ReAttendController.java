@@ -1,5 +1,6 @@
 package tang.tangry.workflow.controller;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,10 +25,10 @@ public class ReAttendController {
 
 
     @RequestMapping
-    public String myReattend(Model model,HttpSession session){
-        String userRealName = ((User)session.getAttribute("userInfo")).getRealName();
+    public String myReattend(Model model, HttpSession session) {
+        String userRealName = ((User) session.getAttribute("userInfo")).getRealName();
         List<ReAttend> reAttendList = reAttendService.listReAttend(userRealName);
-        model.addAttribute("reAttendList",reAttendList);
+        model.addAttribute("reAttendList", reAttendList);
         return "reattend";
     }
 
@@ -40,24 +41,33 @@ public class ReAttendController {
     @ResponseBody
     public String startReAttendFlow(@RequestBody ReAttend reAttend) {
         boolean reAttendStatus = reAttendService.startReAttendFlow(reAttend);
-        if(reAttendStatus){
+        if (reAttendStatus) {
             return "补签成功";
-        }else{
+        } else {
             return "补签失败";
         }
     }
 
+    /**
+     * Create by tryu 2017/7/9 11:28
+     * 查看待审批的补签申请
+     */
+
+    @RequiresPermissions("reattend,listTasks")
     @RequestMapping("/list")
-    @ResponseBody
-    public List<ReAttend> listTasks() {
-        String userName = "老李";
+    public String listTasks(Model model,HttpSession session) {
+        String userName = ((User) session.getAttribute("userInfo")).getRealName();
         List<ReAttend> tasks = reAttendService.listTasks(userName);
-        return tasks;
+        model.addAttribute("taskList",tasks);
+        return "mytasks";
     }
 
+    @RequiresPermissions("reattend,approve")
     @RequestMapping("/approve")
-    public void approveReAttendFlow(@RequestBody ReAttend reAttend) {
+    @ResponseBody
+    public String approveReAttendFlow(@RequestBody ReAttend reAttend) {
         reAttendService.approve(reAttend);
+        return "success";
     }
 
     @RequestMapping("/dblist")

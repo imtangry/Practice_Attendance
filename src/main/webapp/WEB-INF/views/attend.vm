@@ -123,7 +123,7 @@ desired effect
                     <ul class="treeview-menu">
                         <li><a href="/attend">考勤信息</a></li>
                         <li><a href="/reattend">补签信息</a></li>
-                    </ul>
+                        <li><a href="javascript:void(0)" id="myTasks">待办申请</a></li>                    </ul>
                 </li>
 
                 <li class="treeview">
@@ -256,7 +256,7 @@ desired effect
                                 <label for="remark" class="col-sm-3 control-label">备注</label>
                                 <div class="col-sm-9">
                                     <textarea class="form-control" name="comment" value="" id="comment"
-                                              placeholder="备注"></textarea>
+                                              placeholder="备注：补签申请对应记录日期+其他"></textarea>
                                 </div>
                             </div>
 
@@ -384,6 +384,8 @@ desired effect
 <script src="/static/js/getSimpleInfo.js"></script>
 <!-- 异步方式打卡 -->
 <script src="/static/js/Clock.js"></script>
+<!-- 异步方式获得待办补签申请表 -->
+<script src="/static/js/myTasks.js"></script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
@@ -397,14 +399,12 @@ desired effect
         $('#re_attend_form_submit').click(function () {
             console.log(attendFullData);
             var param = {};
-
             param.attendId = $('#attendId').val();
             param.reStarter = $('#reStarter').val();
             param.reDutyOn = $('#reDutyOn').val();
             param.reDutyOff = $('#reDutyOff').val();
             param.comment = $('#comment').val();
             param = JSON.stringify(param).replace(/\"/g, "'");
-
             console.log(param);
         ##使用Ajax
             $.ajax({
@@ -412,7 +412,14 @@ desired effect
                 url: "/reattend/start",
                 contentType:"application/json",
                 data: param,
-                dataType:"json"
+                dataType:"json",
+                success:function(data){
+                    $('#reAttendModal').modal('hide');
+                    alert(data);
+                },
+                error:function(){
+                    $('#reAttendModal').modal('hide');
+                }
             });
         });
     });

@@ -1,5 +1,10 @@
 package tang.tangry.login.controller;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -43,14 +48,34 @@ public class LoginController {
     public String check(HttpServletRequest req) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         String uname = req.getParameter("uname");
         String pwd = req.getParameter("pwd");
-        String dbpwd = CodeUtils.encrypt(pwd);
-        User user = userService.findUserByUname(uname);
-        if (user != null && dbpwd.equals(user.getPassword())) {
-            req.getSession().setAttribute("userInfo", user);
+
+
+
+        UsernamePasswordToken token = new UsernamePasswordToken(uname, pwd);
+        //相当于请求流程中的获得Subject
+        Subject subject = SecurityUtils.getSubject();
+        //调用login方法，带着token到Myrealm
+        try {
+            subject.login(token);
             return "success";
-        } else {
-            return "failed";
+        } catch (AuthenticationException e) {
+            e.printStackTrace();
         }
+        return "failed";
+
+
+
+//        String dbpwd = CodeUtils.encrypt(pwd);
+//        User user = userService.findUserByUname(uname);
+//
+//
+//        if (user != null && dbpwd.equals(user.getPassword())) {
+//            req.getSession().setAttribute("userInfo", user);
+//            return "success";
+//        } else {
+//            return "failed";
+//        }
+
     }
 
     /**

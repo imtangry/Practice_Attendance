@@ -1,0 +1,34 @@
+<div class="box">
+    <!-- /.box-header -->
+    <!-- /.box-header -->
+    <div class="box-body">
+        <table id="attend_grid" class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>补签记录ID</th>
+                <th>补签申请人</th>
+                <th>补签修仙打卡</th>
+                <th>补签下班打卡</th>
+                <th>备注</th>
+                <th>补签表ID</th>
+            </tr>
+            </thead>
+
+            #foreach($task in $taskList)
+                <tr>
+                    <td>$foreach.count</td>
+                    <td>$task.attendId</td>
+                    <td>$task.reStarter</td>
+                    <td>$date.format('HH:mm:ss',$task.reDutyOn)</td>
+                    <td>$date.format('HH:mm:ss',$task.reDutyOff)</td>
+                    <td>$task.comment</td>
+                    <td>$task.id</td>
+                </tr>
+            #end
+        </table>
+    </div>
+    <div id="grid_pager"></div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->

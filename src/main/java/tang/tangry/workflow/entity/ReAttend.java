@@ -3,7 +3,9 @@ package tang.tangry.workflow.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ReAttend implements Serializable{
+public class ReAttend implements Serializable {
+    private static final long serialVersionUID = 3387576934587843365L;
+
     private Integer id;
 
     private Integer attendId;

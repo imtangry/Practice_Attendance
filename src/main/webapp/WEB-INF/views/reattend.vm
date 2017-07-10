@@ -123,7 +123,7 @@ desired effect
                     <ul class="treeview-menu">
                         <li><a href="/attend">考勤信息</a></li>
                         <li><a href="/reattend">补签信息</a></li>
-                    </ul>
+                        <li><a href="javascript:void(0)" id="myTasks">待办申请</a></li>                    </ul>
                 </li>
 
                 <li class="treeview">
@@ -377,6 +377,8 @@ desired effect
 <script src="/static/js/getSimpleInfo.js"></script>
 <!-- 异步方式打卡 -->
 <script src="/static/js/Clock.js"></script>
+<!-- 异步方式获得待办补签申请表 -->
+<script src="/static/js/myTasks.js"></script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the

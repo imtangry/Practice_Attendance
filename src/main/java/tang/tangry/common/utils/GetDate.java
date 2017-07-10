@@ -61,7 +61,7 @@ public class GetDate {
      *获取某个时间点
      */
     public static Date beSetDate(int hour,int minute){
-        calendar.set(Calendar.HOUR,hour);
+        calendar.set(Calendar.HOUR_OF_DAY,hour);
         calendar.set(Calendar.MINUTE,minute);
         return calendar.getTime();
 

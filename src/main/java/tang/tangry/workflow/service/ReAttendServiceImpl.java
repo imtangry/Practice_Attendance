@@ -52,9 +52,12 @@ public class ReAttendServiceImpl implements ReAttendService {
         reAttend.setLeaderHeandle("老李");
         reAttend.setReStatus(RE_ATTEND_UNDER_RROCESSING);
         //插入记录到数据库补签表,要设置dao方法插入成功返回id
+        System.out.println(reAttend);
         int status = reAttendMapper.insertSelective(reAttend);
+        System.out.println(reAttend);
         if (status > 0) {
             Map<String, Object> map = new HashMap<String, Object>();
+            System.out.println(reAttend);
             map.put(RE_ATTEND_RECORD, reAttend);
             map.put(RE_ATTEND_NEXT_HANDLER, reAttend.getLeaderHeandle());
             //启动流程实例
@@ -63,8 +66,8 @@ public class ReAttendServiceImpl implements ReAttendService {
             Task task = taskService.createTaskQuery().processInstanceId(instance.getId()).singleResult();
             taskService.complete(task.getId(), map);
             return true;
-        }else{
-            return  false;
+        } else {
+            return false;
         }
     }
 
