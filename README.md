@@ -1,2 +1,2 @@
 # Practice_Attendance
-简单的考勤系统
+基于JAVA的考勤系统
